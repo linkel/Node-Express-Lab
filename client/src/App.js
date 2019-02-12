@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from "axios";
+import {Route} from "react-router-dom"
+import PostList from "./components/PostList";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      posts: []
+    }
+  }
+  componentDidMount() {
+    console.log("is this hitting?")
+    axios.get("http://localhost:8000/api/posts")
+    .then(response => {
+      console.log(response.data)
+      this.setState({posts: response.data.posts})})
+    .catch(err => console.log(err))
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>My Post List</h1>
+        <Route exact path="/" render={(props) => <PostList posts={this.state.posts} {...props}/>}/>
       </div>
     );
   }

@@ -1,12 +1,17 @@
 const express = require('express');
 const db = require('./data/db.js');
-
+const cors = require("cors")
 const server = express();
 server.use(express.json());
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
+    
     db.find()
-    .then(posts => res.status(200).json({posts}))
+    .then(posts => {
+        console.log("received a GET")
+        res.status(200).json({posts})
+    })
     .catch(err => {
         console.log(err)
         res.status(500).json({ error: "The posts information could not be retrieved." })
