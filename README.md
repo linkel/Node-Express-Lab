@@ -2,29 +2,28 @@
 
 ## Topics:
 
-- Node.js and Express.
-- HTTP methods and status codes.
+- Express Routing
 - Reading Request data from body, URL parameters and query string parameters.
 - API design and development.
 
-## Assignment
+## Description
 
-Use Node.js and Express to build an API that performs _CRUD_ operations on `posts`.
+Use `Node.js` and `Express` to build an API that performs _CRUD_ operations on `blog posts`.
 
-**This is a two day project.**
-
-- **Due Monday**: the server with the `GET` endpoints.
-- **Due Tuesday**: the `POST`, `PUT` and `DELETE` endpoints.
-
-### Download Project Files and Install Dependencies
+### Project Setup
 
 - **Fork** and **Clone** this repository.
 - **CD into the folder** where you cloned the repository.
-- Type `yarn` or `npm install` to download all dependencies listed inside `package.json`.
+- Type `yarn` or `npm install` to download all dependencies.
+- To start the server, type `yarn server` or `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
 
-### Database access
+### Database Persistence Helpers
 
-Database access will be done using the `db.js` file included inside the `data` folder. This file publishes the following methods:
+The `data` folder contains a database populated with test `posts`.
+
+Database access will be done using the `db.js` file included inside the `data` folder.
+
+The `db.js` publishes the following methods:
 
 - `find()`: calling find returns a promise that resolves to an array of all the `posts` contained in the database.
 - `findById()`: this method expects an `id` as it's only parameter and returns the post corresponding to the `id` provided or an empty array if no post with that `id` is found.
@@ -34,43 +33,35 @@ Database access will be done using the `db.js` file included inside the `data` f
 
 Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
 
-### Start the API and Implement Requirements
+### Blog Post Schema
 
-- To start the server, type `yarn server` or `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
-- Add the code necessary to implement the API requirements.
-- **Test the API using [Postman](https://www.getpostman.com/) as you work through the exercises.**
-
-### Post Schema
-
-Posts in the database conform to the following structure:
+A Blog Post in the database has the following structure:
 
 ```js
 {
   title: "The post title", // String, required
-  contents: "The post contents" // String, required
+  contents: "The post contents", // String, required
+  created_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
+  updated_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
 }
 ```
 
-`title` is the title of the post, as a String. `contents` contains the body
-contents of the post, also as a String.
+### Minimum Viable Product
 
-### Provided Code
+- Add the code necessary to implement the endpoints listed below.
+- Separate the endpoints that begin with `/api/posts` into a separate `Express Router`.
 
-We have provided an `index.js` file and a folder called `data`. Inside the `data` folder we have added a database with some posts already populated that you can use to test your endpoints as you build them.
+### Endpoints.
 
-Server.js already has `db.js` required and ready for you to use when building your endpoints.
+Configure the API to handle to the following routes:
 
-### Write endpoints to perform the following queries.
-
-Configure the API to respond to the following routes:
-
-| Method | Endpoint       | Description                                                                                                                       |
-| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                              |
-| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                               |
-| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                    |
-| DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement.                                                              |
-| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**. |
+| Method | Endpoint       | Description                                                                                                                                                                 |
+| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                                                                        |
+| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                                                                         |
+| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                                                              |
+| DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement. |
+| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.                                           |
 
 #### Endpoint Specifications
 
@@ -150,6 +141,13 @@ When the client makes a `PUT` request to `/api/posts/:id`:
   - return the newly updated _post_.
 
 ## Stretch Problems
+
+To work on the stretch problems you'll need to enable the `cors` middleware. Follow these steps:
+
+- add the `cors` npm module: `yarn add cors` or `npm i cors`.
+- add `server.use(cors())` after `server.use(express.json())`.
+
+Create a new React application and connect it to your server:
 
 - Use `create-react-app` to create an application inside the root folder, name it `client`.
 - From the React application connect to the `/api/posts` endpoint in the API and show the list of posts.
